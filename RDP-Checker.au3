@@ -26,7 +26,7 @@ $ips = GUICtrlCreateEdit("", 8, 16, 129, 137, BitOR($ES_AUTOVSCROLL,$ES_AUTOHSCR
 $goods = GUICtrlCreateEdit("", 141, 16, 142, 137, BitOR($ES_AUTOVSCROLL,$ES_AUTOHSCROLL,$ES_WANTRETURN,$WS_VSCROLL))
 GUISetState(@SW_SHOW)
 
-$port1 = "3389"
+$port1 = "3389"             ; rdp port
 
 While 1
    $nMsg = GUIGetMsg()
@@ -34,45 +34,45 @@ While 1
 	  Case $GUI_EVENT_CLOSE
 		 Exit
 	  Case $go
-		 _scan()
+		 _scan()   
 
 	  CASE $clean
-		 GUICtrlSetData($goods,"")
-		 GUICtrlSetData($ips,"")
+		 GUICtrlSetData($goods,"")  ; cleaning  the editbox !
+		 GUICtrlSetData($ips,"")    ; also here
 
-	  case $load
-		 $here = FileOpenDialog("Load the fucking ip list ", @scriptdir , "(*.*)")
-         $here0 = FileRead($here)
-		 if @error = false then
-         GUICtrlSetData($ips,$here0)
+	  Case $load
+		 $here = FileOpenDialog("Load the fucking ip list ", @scriptdir , "(*.*)")   ; load txt file
+                 $here0 = FileRead($here)                                                    ; readit
+	     if @error = false then
+                   GUICtrlSetData($ips,$here0)    ; load & write to the editbox
 	     Else
-		 MsgBox(16,"-_- "," WTF ? ")
+		 MsgBox(16,"- Error "," WTF ? ")  ; error 
 	  endif
 
-		 case $saveas
-		 $ass = GUICtrlRead($goods)
-		 $asss = FileSaveDialog("Save ips",@scriptdir,"file (*.txt)")
+		 case $saveas                                                  ; saving as
+		 $ass = GUICtrlRead($goods)				       ;  good ips
+		 $asss = FileSaveDialog("Save ips",@scriptdir,"file (*.txt)")  ;   results
 		 FileWrite($asss,$ass & @CRLF)
 	EndSwitch
 WEnd
 
 Func _scan()
-   TCPStartup()
-   $timerstart = TimerInit()
+   TCPStartup()                  ; wakeup tcp xD
+   $timerstart = TimerInit()     ; timer :p
 
    $arrIP = StringSplit(GUICtrlRead($ips), @CRLF, 3) ; parse ips to array
 
    For $IP In $arrIP ; foreach ip in array ips
 
-	  Sleep(500)
-	  $test = TCPConnect($IP, $port1)
+	  Sleep(500)                        ; take some time to make a good connection
+	  $test = TCPConnect($IP, $port1)   ; making connectionn.. ip:port
 
-	  If $test <> -1 Then GUICtrlSetData($goods, $IP & "  #Good" & @CRLF, "newline")
+	  If $test <> -1 Then GUICtrlSetData($goods, $IP & "  #Good" & @CRLF, "newline") ; condition , if the ip+port connected (true) then write result in good_editbox
 
 	  Sleep(200)
    Next
 
    TCPShutdown()
    $timerend = TimerDiff($timerstart)
-   TrayTip("9AYLASCANNER", "Finished :)", 7, 1)
+   TrayTip("9AYLASCANNER", "Finished :)", 7, 1) 
 EndFunc
