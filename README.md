@@ -1,6 +1,7 @@
 # RDP-Checker
 
-AutoIt Script RDP Scanner
-
+AutoIt Script Remot Desktop Checker
 
 Enjoy !
+
+Twitter@9aylas
