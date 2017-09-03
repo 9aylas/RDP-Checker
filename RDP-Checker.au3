@@ -42,32 +42,32 @@ While 1
 
 	  Case $load
 		 $here = FileOpenDialog("Load the fucking ip list ", @scriptdir , "(*.*)")   ; load txt file
-                 $here0 = FileRead($here)                                                    ; readit
+                 $here0 = FileRead($here) 
 	     if @error = false then
-                   GUICtrlSetData($ips,$here0)    ; load & write to the editbox
+                 GUICtrlSetData($ips,$here0)    ;  ips_editbox recives the data ( txt file )
 	     Else
-		 MsgBox(16,"- Error "," WTF ? ")  ; error 
+		 MsgBox(16,"- Error "," WTF ? ")
 	  endif
 
-		 case $saveas                                                  ; saving as
-		 $ass = GUICtrlRead($goods)				       ;  good ips
-		 $asss = FileSaveDialog("Save ips",@scriptdir,"file (*.txt)")  ;   results
+		 case $saveas
+		 $ass = GUICtrlRead($goods)
+		 $asss = FileSaveDialog("Save ips",@scriptdir,"file (*.txt)")
 		 FileWrite($asss,$ass & @CRLF)
 	EndSwitch
 WEnd
 
 Func _scan()
-   TCPStartup()                  ; wakeup tcp xD
-   $timerstart = TimerInit()     ; timer :p
+   TCPStartup()                 
+   $timerstart = TimerInit()      
 
    $arrIP = StringSplit(GUICtrlRead($ips), @CRLF, 3) ; parse ips to array
 
    For $IP In $arrIP ; foreach ip in array ips
 
-	  Sleep(500)                        ; take some time to make a good connection
+	  Sleep(500)                        ; take sometime to make a good connection
 	  $test = TCPConnect($IP, $port1)   ; making connectionn.. ip:port
 
-	  If $test <> -1 Then GUICtrlSetData($goods, $IP & "  #Good" & @CRLF, "newline") ; condition , if the ip+port connected (true) then write result in good_editbox
+	  If $test <> -1 Then GUICtrlSetData($goods, $IP & "  #Good" & @CRLF, "newline") ; condition , if the ip+port = (true)  , then write results in goods_editbox
 
 	  Sleep(200)
    Next
